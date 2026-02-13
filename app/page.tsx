@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-const MUSIC_PATH = 'love.mp3' // REPLACE THIS with your music file path
+const MUSIC_PATH = '/love.mp3' // REPLACE THIS with your music file path
 
 const messages = [
   "its my boyfriend mo nakahawig ni Jungkook",
@@ -80,7 +80,7 @@ export default function Page() {
           <div className="flex flex-col items-center justify-center">
             <div className="mb-8">
               <img
-                src="2ndpic.jpg"
+                src="/2ndpic.jpg"
                 alt="Happy bears hugging"
                 className="w-80 h-80 object-contain mx-auto"
               />
@@ -123,7 +123,7 @@ export default function Page() {
               <div className="flex flex-col items-center gap-8">
                 <div className="mb-4">
                   <img
-                    src="1stpic.png"
+                    src="/1stpic.png"
                     alt="Bear asking"
                     className="w-64 h-64 object-contain mx-auto"
                   />
