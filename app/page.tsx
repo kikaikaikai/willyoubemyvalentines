@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-const MUSIC_PATH = '/love.mp3' // REPLACE THIS with your music file path
+const MUSIC_PATH = '/love.mp3' // Make sure this file is in the /public folder
 
 const messages = [
   "its my boyfriend mo nakahawig ni Jungkook",
@@ -35,7 +35,7 @@ const noMessages = [
 export default function Page() {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
   const [showButtons, setShowButtons] = useState(false)
-  const [answered, setAnswered] = useState(null)
+  const [answered, setAnswered] = useState<string | null>(null)
   const [noButtonPos, setNoButtonPos] = useState({ x: 0, y: 0 })
   const [noMessageIndex, setNoMessageIndex] = useState(0)
 
@@ -55,10 +55,23 @@ export default function Page() {
     audio.autoplay = true
     audio.loop = true
     audio.volume = 0.5
-    audio.play().catch(err => console.log('Autoplay blocked:', err))
+    
+    // Add user interaction to play audio (required by browsers)
+    const playAudio = () => {
+      audio.play().catch(err => console.log('Autoplay blocked:', err))
+      // Remove listener after first interaction
+      document.removeEventListener('click', playAudio)
+    }
+    
+    // Try to play immediately
+    audio.play().catch(() => {
+      // If autoplay fails, wait for user interaction
+      document.addEventListener('click', playAudio)
+    })
     
     return () => {
       audio.pause()
+      document.removeEventListener('click', playAudio)
     }
   }, [])
 
@@ -80,9 +93,13 @@ export default function Page() {
           <div className="flex flex-col items-center justify-center">
             <div className="mb-8">
               <img
-                src="images/2ndpic.jpg"
+                src="/images/2ndpic.jpg"
                 alt="Happy bears hugging"
                 className="w-80 h-80 object-contain mx-auto"
+                onError={(e) => {
+                  console.error('Image failed to load:', e)
+                  e.currentTarget.style.display = 'none'
+                }}
               />
             </div>
             <div className="text-center space-y-4">
@@ -123,9 +140,13 @@ export default function Page() {
               <div className="flex flex-col items-center gap-8">
                 <div className="mb-4">
                   <img
-                    src="images/1stpic.png"
+                    src="/images/1stpic.png"
                     alt="Bear asking"
                     className="w-64 h-64 object-contain mx-auto"
+                    onError={(e) => {
+                      console.error('Image failed to load:', e)
+                      e.currentTarget.style.display = 'none'
+                    }}
                   />
                 </div>
 
